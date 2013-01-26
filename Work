@@ -1,0 +1,194 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package healthyself;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import java.util.Random;
+
+
+
+
+/**
+ *
+ * @author catfriedrice
+ */
+public class Work extends JPanel implements Runnable, Common {
+    // Default Values that can be changed over time are in Common
+    
+    
+    
+    int i;
+    private String gameover = "Game Over";
+    private Dimension d;
+    private ArrayList enemies;
+    private ArrayList shotsfired;
+    private Player player;
+    //private PlayerShot shot;
+    private int HP = INIT_HP;
+    private long score = 0;
+    private int lives = INIT_LIVES;
+    private int deaths = 0;
+    private boolean ngame = true;
+    private final String edestroy = "destroy.png";
+    private final String enemy = "enemies.png";
+    
+    Random generator;
+    
+    
+    private Thread a;
+    
+    private String S_Score = "Score";
+    private String S_HP = "Health";
+    
+   
+    public Work() {
+        addKeyListener(new Work.TAdapter());
+        setFocusable(true);
+        d = new Dimension(GAME_WIDTH, GAME_HEIGHT);
+        setBackground(Color.red);
+        Init();
+        setDoubleBuffered(true);
+    }
+    
+    public void addNotify() {
+        super.addNotify();
+        Init();
+    }
+    
+    public void Init() {
+        // enemies = new ArrayList();
+        
+        // ImageIcon r = new ImageIcon(this.getClass().getResources(enemy));
+        //add enemies here
+        player = new Player();
+        shotsfired = new ArrayList();
+        
+        if (a == null || !ngame) {
+            a = new Thread(this);
+            a.start();
+        }
+   /*     public void drawEnemies (Graphics g) {
+            Iterator iter = enemies.iterator();
+            while (it.hasNext()) {
+                Enemy enemy = (Enemy) iter.next();
+                if enemy.isVisible()) {
+                    g.drawimage (enemy.getImage(), enemy.getX(), enemy.getY(), this);
+                }
+                if (enemy.isDead) {
+                    enemy.die();
+                }
+            } */
+        } 
+        public void drawPlayer (Graphics g) {
+            if (player.isVisible()) {
+                g.drawImage(player.getImage(), player.getX(), player.getY(), this);
+            }
+            if (player.isDead()){
+                player.die();
+                ngame = false;
+            }
+        }
+        public void drawShot (Graphics g) {
+            Iterator it = shotsfired.iterator();
+            while (it.hasNext()) {
+                PlayerShot shot = (PlayerShot) it.next();
+                if (shot.isVisible()) {
+                    shot.setX(shot.getX() + SHOT_SPEED);
+                    
+                    g.drawImage (shot.getImage(), shot.getX(), shot.getY(), this);
+                }
+                if (shot.isDead()) {
+                    shot.die();
+                }
+            } 
+        }
+        
+        public void paint(Graphics g) {
+            super.paint(g);
+            
+            g.setColor(Color.red);
+            g.fillRect(0,0,d.width, d.height);
+            g.setColor(Color.black);
+            
+            if (ngame) {
+                drawPlayer(g);
+                drawShot(g);
+            }
+            Toolkit.getDefaultToolkit().sync();
+            g.dispose();
+        }
+        public void gameOver() {
+            Graphics g = this.getGraphics();
+            g.setColor(Color.black);
+            g.fillRect(0,0,GAME_WIDTH, GAME_HEIGHT);
+            g.setColor(Color.white);
+            Font f = new Font("Arial", Font.BOLD, 14);
+            FontMetrics m = this.getFontMetrics(f);
+            
+            g.setFont(f);
+            g.drawString(gameover, (GAME_WIDTH - m.stringWidth(gameover)/2), GAME_WIDTH/2);
+        }
+        public void animationCycle() {
+            player.act();
+       
+            
+            
+        }
+        
+        public void run() {
+            long bt, time, sleep;
+            bt = System.currentTimeMillis(); 
+            
+            while (ngame) {
+                repaint();
+                
+                animationCycle();
+                time = System.currentTimeMillis() - bt;
+                sleep = INIT_DELAY - time;
+                
+                if (sleep < 0) sleep = 2;
+                try {
+                    Thread.sleep(sleep);
+                } catch (InterruptedException e) {
+                    System.out.println("UhOh");
+                }
+                bt = System.currentTimeMillis();
+            }
+            gameOver();
+        }
+        private class TAdapter extends KeyAdapter {
+            public void keyReleased(KeyEvent e) {
+                player.keyReleased(e);
+            }
+            public void keyPressed(KeyEvent e) {
+                player.keyPressed(e);
+                int x = player.getX();
+                int y = player.getY();
+                
+                if (ngame)
+                {
+                    if (e.isShiftDown()) {
+         
+                        PlayerShot shot = new PlayerShot(player.getX(), player.getY());
+                        shotsfired.add(shot);
+                    }
+                }
+            }
+        }
+}

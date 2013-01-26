@@ -1,0 +1,38 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package healthyself;
+
+/**
+ *
+ * @author catfriedrice
+ */
+import java.awt.*;
+
+abstract class Sprite {
+    protected boolean visible;
+    protected boolean active;
+    abstract void paint (Graphics g);
+    abstract void update ();
+    
+    public boolean isVisible() {
+        return visible;
+    }
+    public void setVisible (boolean b) {
+        visible = b;
+    }
+    public void setActive (boolean b) {
+        active = b;
+    }
+    public void suspend () {
+        setVisible(false);
+        setActive(false);
+    }
+    public void restore () {
+        setVisible(true);
+        setActive(true);
+    }
+    
+        
+}

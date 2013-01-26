@@ -1,0 +1,24 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package healthyself;
+
+/**
+ *
+ * @author catfriedrice
+ */
+import javax.swing.ImageIcon;
+public class PlayerShot extends Sprite implements Common {
+    private String shot = "shot.png";
+    
+    public PlayerShot() {
+    }
+    public PlayerShot(int x, int y) {
+        ImageIcon r = new ImageIcon(this.getClass().getResource(shot));
+        setImage(r.getImage());
+        setX(x + PLAYER_WIDTH);
+        setY(y + PLAYER_HEIGHT/2);
+    }
+
+}

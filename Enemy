@@ -1,0 +1,57 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package healthyself;
+
+/**
+ *
+ * @author catfriedrice
+ */
+
+import javax.swing.ImageIcon;
+
+
+public class Enemy extends Sprite {
+    protected int x;
+    protected int y;
+    private EAttack eattack;
+    private final String virus = "enemies.png";
+    
+    
+    public Enemy (int x, int y) {
+        this.x = x;
+        this.y = y;
+        
+        eattack = new EAttack(x, y);
+        ImageIcon r = new ImageIcon(this.getClass().getResource(virus));
+        setImage(r.getImage());
+    }
+    
+    public void act(int dx, int dy) {
+        this.x += dx;
+        this.y += dy;
+    }
+    public EAttack getShot() {
+        return eattack;
+    }
+    
+    public class EAttack extends Sprite {
+        private final String shot = "../enemyshot.png";
+        private boolean die;
+        public EAttack(int x, int y) {
+            setDestroyed(true);
+            this.x = x;
+            this.y = y;
+            ImageIcon r = new ImageIcon(this.getClass().getResource(shot));
+            setImage(r.getImage());
+        }
+        public void setDestroyed(boolean die) {
+            this.die = die;
+        }
+        public boolean isDestroyed() {
+            return die;
+        }
+        
+    }
+}

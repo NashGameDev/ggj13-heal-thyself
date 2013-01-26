@@ -1,0 +1,76 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package healthyself;
+import java.applet.*;
+import java.awt.*;
+import javax.swing.ImageIcon;
+import java.awt.event.KeyEvent;
+
+/**
+ *
+ * @author catfriedrice
+ */
+
+public class Player extends Sprite implements Common {
+    
+    private final int S_X = 30;
+    private final int S_Y = 200;
+    
+    private final String playerimg = "player.png";
+    private int width; 
+    private int height;
+    
+
+    
+    public Player () {
+        ImageIcon r = new ImageIcon(this.getClass().getResource(playerimg));
+        width = r.getImage().getWidth(null);
+        height = r.getImage().getHeight(null);
+        
+        setImage(r.getImage());
+        setX(S_X);
+        setY(S_Y);
+    }
+    public void act() {
+        x += dx;
+        y += dy;
+        if (x <= LEFT_BORDER) { x = LEFT_BORDER; }
+        if (x >= RIGHT_BORDER) { x = RIGHT_BORDER; }
+        if (y <= TOP_VEIN) { y = TOP_VEIN; }
+        if (y >= BOTTOM_VEIN) { y = BOTTOM_VEIN; }
+    }
+    public void keyPressed(KeyEvent e) {
+        int k = e.getKeyCode();
+        // key events: A = left, W = up, D = right, S = down
+        if (k == KeyEvent.VK_A) {
+            dx = 0 - LEFT_MOVE;
+        }
+        if (k == KeyEvent.VK_D) {
+            dx = RIGHT_MOVE;
+        }
+        if (k == KeyEvent.VK_W) {
+            dy = 0 - UP_MOVE;
+        }
+        if (k == KeyEvent.VK_S) {
+            dy = DOWN_MOVE;
+        }
+        
+    }
+    public void keyReleased (KeyEvent e) {
+        int k = e.getKeyCode();
+        if (k == KeyEvent.VK_A) {
+            dx = 0;
+        }
+        if (k == KeyEvent.VK_D) {
+            dx = 0;
+        }
+        if (k == KeyEvent.VK_W) {
+            dy = 0;
+        }
+        if (k == KeyEvent.VK_S) {
+            dy = 0;
+        }
+    }
+}

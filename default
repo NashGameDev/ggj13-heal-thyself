@@ -1,0 +1,25 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package healthyself;
+
+/**
+ *
+ * @author catfriedrice
+ */
+public interface Default {
+    public static final int GAME_WIDTH = 600;
+    public static final int GAME_HEIGHT = 400;
+    public static final int BOTTOM_VEIN = 390;
+    public static final int TOP_VEIN = 10;
+    public static final int PLAYER_WIDTH = 15;
+    public static final int PLAYER_HEIGHT = 15;
+    public static final int UP_MOVE = 5;
+    public static final int DOWN_MOVE = 5;
+    public static final int LEFT_MOVE = 5;
+    public static final int RIGHT_MOVE = 5;
+    public static final int LEFT_BORDER = 10;
+    public static final int RIGHT_BORDER = 550;
+    
+}
